@@ -99,7 +99,7 @@ Dentro del directorio de la app, abrir `views.py` y añadir lo siguiente:
 from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("Listado de departamentos")
+    return HttpResponse("Listado de estudiantes")
 ```
     
 Abrir (o crear) el fichero `urls.py` y añadir el patrón para la siguiente ruta:
@@ -124,9 +124,51 @@ urlpatterns = [
 
 De este modo tenemos un `urls.py` en cada directorio de nuestras aplicaciones gestionados desde el `urls.py` del directorio del proyecto.
 
-### PASO 5: Crea el modelo de nuestra aplicación
+### PASO 5: Mejora la vista utilizando plantillas
+Para que nuestra aplicación muestre vistas HTML en lugar de una cadena de texto, utilizaremos plantillas (templates). Crea tu primera plantilla, `student_list.html`, dentro de una carpeta llamada `templates`. El contenido será el siguiente:
 
-Editar el fichero `models.py` de la aplicación creando las clases Departamento, Habilidad y Empleado:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django University App</title>
+</head>
+<body>
+<h1>Hello!</h1>
+</body>
+</html>
+```
+
+Las plantillas podrán recibir un diccionario de datos para mostrar aquella información que nos interese. Vamos a probar a pasar una variable que incluya el nombre de la clase:
+
+```python
+def index(request):
+    context = {'clase': 'Aprendiendo Django'}
+    return render(request, 'student_list.html', context)
+```
+
+Para mostrarla en la vista simplemente tendremos que escribir el nombre de la variable entre los símbolos `{{ }}`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django University App</title>
+</head>
+<body>
+<h1>Hello!</h1>
+<h2>Clase: {{ clase }}</h2>
+</body>
+</html>
+```
+
+### PASO 6: Crea el modelo de nuestra aplicación
+
+Nuestra aplicación web deberá mostrar información almacenada en la base de datos. Como queremos mostrar un listado de estudiantes, vamos a crear un modelo llamado `Student` que contenga toda la información que queremos almacenar sobre un estudiante.
+
+Edita el fichero `models.py` de la aplicación creando las clase Student:
 
    ```python
 from django.db import models
