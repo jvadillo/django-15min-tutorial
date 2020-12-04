@@ -1,5 +1,5 @@
 # django-15min-tutorial
-Tutorial de Django en 15 minutos
+Tutorial de Django en 15 minutos craedo para el taller de PyDay Chile 2020.
 
 ## Conocimientos previos
 
@@ -176,18 +176,18 @@ from django.db import models
 class Student(models.Model):
 	# No es necesario crear un campo para la Primary Key, Django creará automáticamente un IntegerField.
 	nombre = models.CharField(max_length=50)
-  apellidos = models.CharField(max_length=50)
+  	apellidos = models.CharField(max_length=50)
 	edad = models.IntegerField()
-  email = models.EmailField()
+  	email = models.EmailField()
 ```    
 Aplica los cambios realizados en el modelo mediante los siguientes comandos:
     
    ```
-python manage.py makemigrations appEmpresaDjango
+python manage.py makemigrations DjangoUniApp
 python manage.py migrate   
    ```
 
-### PASO 6: Añade y consulta registros desde la API de Django
+### PASO 7: Añade y consulta registros desde la API de Django
 
 Accede al intérprete interactivo de Django escribiendo el siguiente comando:
 
@@ -195,49 +195,22 @@ Accede al intérprete interactivo de Django escribiendo el siguiente comando:
 
 Una vez dentro, ya puedes comenzar a crear y consultar registros.
    ```python
-	>>> from appEmpresaDjango.models import Departamento, Habilidad, Empleado
-	>>> departamento = Departamento(nombre="Oficina Tecnica", telefono="945010101")
-	>>> departamento.save()
+	>>> from DjangoUniApp.models import Student
+	>>> estudiante1 = Student(nombre="Julio", apellidos="Ammorrortu Jainaga", edad=22, email="julio@mail.com")
+	>>> estudiante1.save()
 	# Django le asigna un id.
-	>>> departamento.id
+	>>> estudiante1.id
 	1
 	
 	# Acceder a sus atributos
-	>>> departamento.nombre
-	'Oficina Tecnica'
+	>>> estudiante1.nombre
+	'Julio'
 	
 	>>> Departamento.objects.all()
-	<QuerySet [<Departamento: Departamento object (1)>]>
+	<QuerySet [<Student: Departamento object (1)>]>
 	
-	>>> Departamento.objects.filter(nombre__contains='Oficina').count()
+	>>> Student.objects.filter(nombre__contains='Juli').count()
 	1
-	
-	# Mostrar los empleados de un departamento.
-	>>> departamento.empleado_set.all()
-	<QuerySet []>
-	
-	# Crear empleados.
-	>>> departamento.empleado_set.create(nombre='Mikel Uriarte', fecha_nacimiento='1985-01-23')
-	<Empleado: Empleado object (1)>
-	
-	>>>> departamento.empleado_set.create(nombre='Ane Labastida', fecha_nacimiento='1987-12-14')
-	<Empleado: Empleado object (2)>
-	
-	empleado = departamento.empleado_set.create(nombre='Luken Abarra', fecha_nacimiento='1989-05-12')
-	
-	# Es posible acceder desde el hijo a su padre.
-	>>> empleado.departamento
-	<Departamento: Departamento object (1)>
-	
-	>>> empleado.departamento.nombre
-	'Oficina Tecnica'
-	
-	# También es posible acceder desde el padre a todos sus hijos.
-	>>> departamento.empleado_set.all()
-	<QuerySet [<Empleado: Empleado object (1)>, <Empleado: Empleado object (2)>, <Empleado: Empleado object (3)>]>
-	
-	>>>> departamento.empleado_set.count()
-	3
 	
 	>>>> quit()
    ```
@@ -249,7 +222,7 @@ def __str__(self):
         return self.nombre
 ```
 
-### PASO 7: Utiliza la aplicación de Administración de Django para visualizar y añadir registros
+### PASO 8 (no incluido en el taller de PyDay 2020): Utiliza la aplicación de Administración de Django para visualizar y añadir registros
 
 La aplicación de administración permite visualizar la información de nuestros modelos de forma sencilla. Crear un usuario "adminDjango" (contraseña: "adminDjango") para la aplicación de administración:
     
@@ -274,7 +247,7 @@ python manage.py runserver
     
 Entrar en la aplicación [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) y añadir algunas entradas en cada entidad para tener un juego de ensayo que luego se pueda ver desde la aplicación [http://127.0.0.1:8000/appEmpresaDjango](http://127.0.0.1:8000/appEmpresaDjango)
 
-### PASO 8: Crea las vistas y urls para interactuar con el modelo
+### PASO 9: Crea las vistas y urls para interactuar con el modelo
 
 Creamos las vistas correspondientes a las siguientes URLs:
 
