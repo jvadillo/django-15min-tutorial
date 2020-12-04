@@ -247,351 +247,45 @@ python manage.py runserver
     
 Entrar en la aplicación [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) y añadir algunas entradas en cada entidad para tener un juego de ensayo que luego se pueda ver desde la aplicación [http://127.0.0.1:8000/appEmpresaDjango](http://127.0.0.1:8000/appEmpresaDjango)
 
-### PASO 9: Crea las vistas y urls para interactuar con el modelo
+### PASO 9: Actualizar la vista para que muestre la información de la base de datos
 
-Creamos las vistas correspondientes a las siguientes URLs:
-
-| URL | Descripción de la vista |
-| -- | -- |
-| /appEmpresaDjango  | Muestra todos los departamentos  |
-| /appEmpresaDjango/departamento/<:id>  | Muestra los detalles de un departamento a partir del ID indicado  |
-| /appEmpresaDjango/departamento/<:id>/empleados  | Muestra los empleados del departamento con el ID indicado  |
-| /appEmpresaDjango/empleado/<:id>  | Muestra los detalles del empleado con el ID indicado  |
-| /appEmpresaDjango/habilidad/<:id>  | Muestra los detalles de la habilidad con el ID indicado  |
-
-Creamos las vistas (cada vista estará definida por una función):
-```python
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Departamento, Habilidad, Empleado
-
-#devuelve el listado de empresas
-def index(request):
-	departamentos = Departamento.objects.order_by('nombre')
-	output = ', '.join([d.nombre for d in departamentos])
-	return HttpResponse(output)
-
-#devuelve los datos de un departamento
-def detail(request, departamento_id):
-	departamento = Departamento.objects.get(pk=departamento_id)
-	output = ', '.join([str(departamento.id), departamento.nombre, str(departamento.telefono)])
-	return HttpResponse(output)
-
-#devuelve los empleados de un departamento
-def empleados(request, departamento_id):
-	departamento = Departamento.objects.get(pk=departamento_id)
-	output = ', '.join([e.nombre for e in departamento.empleado_set.all()])
-	return HttpResponse(output)
-
-#devuelve los detalles de un empleado
-def empleado(request, empleado_id):
-	empleado = Empleado.objects.get(pk=empleado_id)
-	output = ', '.join([str(empleado.id), empleado.nombre, str(empleado.fecha_nacimiento), str(empleado.antiguedad), str(empleado.departamento), str([h.nombre for h in empleado.habilidades.all()])])
-	return HttpResponse(output)
-
-#devuelve los detalles de una habilidad
-def habilidad(request, habilidad_id):
-	habilidad = Habilidad.objects.get(pk=habilidad_id)
-	output = ', '.join([str(habilidad.id), habilidad.nombre, str([e.nombre for e in habilidad.empleado_set.all()])])
-	return HttpResponse(output)
-```
-
-Creamos las URLs que redirijan las peticiones a las vistas creadas:
-```python
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', views.index, name='index'),
-    path('departamento/<int:departamento_id>/', views.detail, name='detail'),
-    path('departamento/<int:departamento_id>/empleados', views.empleados, name='empleados'),
-    path('empleado/<int:empleado_id>', views.empleado, name='empleado'),
-    path('habilidad/<int:habilidad_id>', views.habilidad, name='habilidad')
-]
-```
-
-### PASO 9 (opcional): Mejora las vistas controlando errores 404
-
-Utiliza el método `get_object_or_404` para controlar los casos en los que el registro de la petición no exista:
+Modificamos la vista que teníamos definida en `views.py` para que recoja todos los registros desde la base de datos y se los pase a la vista.
 
 ```python
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Departamento, Habilidad, Empleado
-
-
-#devuelve el listado de empresas
-def index(request):
-	departamentos = get_list_or_404(Departamento.objects.order_by('nombre'))
-	output = ', '.join([d.nombre for d in departamentos])
-	return HttpResponse(output)
-
-#devuelve los datos de un departamento
-def detail(request, departamento_id):
-	departamento = Departamento.objects.get(pk=departamento_id)
-	# output = ', '.join([str(departamento.id), departamento.nombre, str(departamento.telefono)])
-	output = f"{departamento.id}, {departamento.nombre}, {departamento.telefono}"
-	return HttpResponse(output)
-
-#devuelve los empleados de un departamento
-def empleados(request, departamento_id):
-	departamento = get_object_or_404(Departamento, pk=departamento_id)
-	output = ', '.join([e.nombre for e in departamento.empleado_set.all()])
-	return HttpResponse(output)
-
-#devuelve los detalles de un empleado
-def empleado(request, empleado_id):
-    empleado = Empleado.objects.get(pk=empleado_id)
-    datos_empleado = f"{empleado.id}, {empleado.nombre}, {empleado.fecha_nacimiento}, {empleado.antiguedad}, {empleado.departamento.nombre}"
-    habilidades = ', '.join([h.nombre for h in empleado.habilidades.all()])
-    output = f"{datos_empleado} // Habilidades: {habilidades}"
-    return HttpResponse(output)
-
-#devuelve los detalles de una habilidad
-def habilidad(request, habilidad_id):
-	habilidad = Habilidad.objects.get(pk=habilidad_id)
-	output = ', '.join([str(habilidad.id), habilidad.nombre])
-	return HttpResponse(output)
-```
-
-
-### PASO 10: Utiliza plantillas para mostrar la información
-
-Actualiza las vistas creadas en `views.py`:
-
-```python
-from django.shortcuts import get_object_or_404, get_list_or_404
 from django.shortcuts import render
-from .models import Departamento, Habilidad, Empleado
+from .models import Student
 
-#devuelve el listado de empresas
 def index(request):
-	departamentos = get_list_or_404(Departamento.objects.order_by('nombre'))
-	context = {'lista_departamentos': departamentos }
-	return render(request, 'index.html', context)
-
-#devuelve los datos de un departamento
-def detail(request, departamento_id):
-	departamento = get_object_or_404(Departamento, pk=departamento_id)
-	context = {'departamento': departamento }
-	return render(request, 'detail.html', context)
-
-#devuelve los empelados de un departamento
-def empleados(request, departamento_id):
-	departamento = get_object_or_404(Departamento, pk=departamento_id)
-	empleados =  departamento.empleado_set.all()
-	context = {'departamento': departamento, 'empleados' : empleados }
-	return render(request, 'empleados.html', context)
-
-#devuelve los detalles de un empleado
-def empleado(request, empleado_id):
-	empleado = get_object_or_404(Empleado, pk=empleado_id)
-	habilidades =  empleado.habilidades.all()
-    context = { 'empleado': empleado, 'habilidades' : habilidades }
-    return render(request, 'empleado.html', context)
-
-# Devuelve los detalles de una habilidad
-def habilidad(request, habilidad_id):
-    habilidad = get_object_or_404(Habilidad, pk=habilidad_id)
-    empleados =  habilidad.empleado_set.all()
-    context = { 'empleados': empleados, 'habilidad' : habilidad }
-    return render(request, 'habilidad.html', context)
+    estudiantes = Student.objects.all()
+    context = {'clase': 'Aprendiendo Django', 'estudiantes': estudiantes}
+    return render(request, 'student_list.html', context)
 ```
 
-Crea las plantillas (en una carpeta "templates" dentro del directorio de la aplicación) que definan la estructura de las páginas HTML resultantes :
+Ahora que ya tenemos la información disponible en la plantilla, editamos la plantilla para que itere por cada estudiante y lo muestre por pantalla:
 
-Plantilla index.html:
-
-```python
-{% extends "base.html" %}
-
-{% block titulo %}Listado de departamentos{% endblock %}
-
-{% block contenido %}
-<h2>Listado de departamentos</h2>
-{% if lista_departamentos %}
-	<ul>
-	{% for d in lista_departamentos %}
-		<li>
-		    <a href="/appEmpresaDjango/departamento/{{ d.id }}">{{ d.nombre}}</a>
-		</li>
-	{% endfor %}
-	</ul>
-{% else %}
-<p>No hay departamentos creados.</p>
-{% endif %}
-{% endblock %}
-```
-Plantilla detail.html:
-
-```python
-{% extends "base.html" %}
-
-{% block titulo %} Detalle del departamento {% endblock %}
-
-{% block contenido %}
-<h2>Datos del departamento</h2>
-
-{% if departamento %}
-    <ul>
-        <li>
-            {{ departamento.nombre}}
-        </li>
-        <li>
-            {{ departamento.telefono}}
-        </li>
-        <li>
-            <a href="/appEmpresaDjango/departamento/{{ departamento.id }}/empleados">Ver empleados</a>
-        </li>
-    </ul>
-{% else %}
-    <p>No existe este departamento.</p>
-{% endif %}
-
-{% endblock %}
-```
-
-Plantilla empleados.html:
-
-```python
-{% extends "base.html" %}
-
-{% block titulo %} Empleados del departamento {% endblock %}
-
-{% block contenido %}
-<h2>Lista de empleados</h2>
-<h3>{{ departamento.nombre }}</h3>
-{% if empleados %}
-	<ul>
-	{% for e in empleados %}
-		<li>
-		    <a href="/appEmpresaDjango/empleado/{{ e.id }}">{{ e.nombre}}</a>
-		</li>
-	{% endfor %}
-	</ul>
-{% else %}
-<p>No hay empleados creados.</p>
-{% endif %}
-{% endblock %}
-```
-
-Plantilla empleado.html:
-
-```python
-{% extends "base.html" %}
-
-{% block titulo %} Detalles del empleado {% endblock %}
-
-{% block contenido %}
-
-<h2>Datos del empleado</h2>
-
-{% if empleado %}
-    <ul>
-        <li>
-            {{ empleado.nombre}}
-        </li>
-        <li>
-            {{ empleado.fecha_nacimiento}}
-        </li>
-        <li>
-            {{ empleado.antiguedad}}
-        </li>
-        <li>
-            <a href="/appEmpresaDjango/departamento/{{ empleado.departamento.id }}">{{ empleado.departamento}}</a>
-        </li>
-    </ul>
-	<h3>Lista de habilidades</h3>
-	{% if habilidades %}
-		<ol>
-		{% for h in habilidades %}
-			<li><a href="/appEmpresaDjango/habilidad/{{ h.id }}">{{ h.nombre}}</a></li>
-		{% endfor %}
-		</ol>
-	{% else %}
-		<p>No tiene habilidades asociadas.</p>
-	{% endif %}
-{% else %}
-    <p>No existe este empleado.</p>
-{% endif %}
-
-{% endblock %}
-```
-
-Plantilla habilidad.html:
-
-```python
-{% extends "base.html" %}
-
-{% block titulo %} Detalles de la habilidad {% endblock %}
-
-{% block contenido %}
-
-<h2>Datos de la habilidad</h2>
-
-{% if habilidad %}
-    <h3>{{ habilidad.nombre}}</h3>
-	<h3>Lista de empleados</h3>
-	{% if empleados %}
-		<ol>
-		{% for e in empleados %}
-			<li><a href="/appEmpresaDjango/empleado/{{ e.id }}">{{ e.nombre}}</a></li>
-		{% endfor %}
-		</ol>
-	{% else %}
-		<p>No tiene empleados asociados.</p>
-	{% endif %}
-{% else %}
-    <p>No existe esta habilidad.</p>
-{% endif %}
-
-{% endblock %}
-```
-
-### PASO 11: La herencia en plantillas
-
-Django permite crear una plantilla base que contenga el “esqueleto” con todos los elementos comunes y definir bloques que puedan sobreescritos por las plantillas que la hereden. 
-
-Crea una plantilla "base.html":
 ```html
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <title>{% block titulo %}Gestor de Empleados{% endblock %}</title>
-    </head>
-    <body>
-        <div id="content">
-	     <h1>Gestor de Empleados</h1>
-            {% block contenido %}{% endblock %}
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Django University App</title>
+</head>
+<body>
+<h1>Hello!</h1>
+<h2>Clase: {{ clase }}</h2>
+{% if estudiantes %}
+<ul>
+    {% for estudiante in estudiantes %}
+    <li>{{ estudiante.nombre }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
 </html>
 ```
 
+Ahora ya solo queda recargar la aplicación en nuestro navegador para visualizar todos los estudiantes.
 
-Las plantillas específicas que heredan de la plantilla base, como ya pusimos en las vistas anteriores, deben llevar una única directiva "extends":
-
-```python
-#index.html:
-{% extends "base.html" %}
-```
-
-### PASO 12: Actualizar las URLs
-
-En lugar de utilizar la ruta de la URL, podemos utilizar el nombre que le hemos dado en el mapeo definido en `urls.py`
-
-Antes:
-```html
-<li><a href="/appEmpresaDjango/departamento/{{ d.id }}">{{ d.nombre }}</a></li>
-```
-Ahora
-```html
-<li><a href="{% url 'detail' d.id %}">{{ d.nombre}}</a></li>
-```
-Cambia también el resto de URLs en las vistas correspondientes.
-
-Entrar en la aplicación [http://127.0.0.1:8000/appEmpresaDjango/](http://127.0.0.1:8000/appEmpresaDjango/)
 
 ## Licencia
 
