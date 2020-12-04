@@ -30,7 +30,7 @@ A partir de este momento podrás comenzar a crear aplicaciones con Django.
 
 Crea el proyecto Django utilizando la utilidad de administración `django-admin`:
 
-      django-admin startproject empresaDjango
+      django-admin startproject DjangoUniversity
     
     
 La estructura de ficheros resultante es la siguiente:
@@ -90,7 +90,7 @@ La estructura de ficheros resultante será la siguiente:
 Incluir a aplicación dentro del fichero `settings.py` del proyecto, añadiendo el nombre a la lista `INSTALLED_APPS`:
 	
 	 INSTALLED_APPS = [
-	 	'appEmpresaDjango',
+	 	'DjangoUniApp',
 	 	# ...
 	 ]
 
