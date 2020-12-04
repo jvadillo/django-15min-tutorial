@@ -298,6 +298,8 @@ El objetivo de este curso era el de hacer una introducción a Django con una apl
 
 Para ello puedes seguir el curso gratuito disponible en Youtube: [Curso DJANGO paso a paso para principiantes](https://www.youtube.com/playlist?list=PL8ZnVqiE4oiY6fh6_vvNKwkxfutf3CiMY)
 
+También puedes encontrar más información en [este repositorio](https://github.com/jvadillo/curso-django-paso-a-paso)
+
 ## Licencia
 
 ![Licencia_img](http://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-nc-sa.png)
