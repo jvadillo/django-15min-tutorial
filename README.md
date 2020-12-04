@@ -2,9 +2,9 @@
 Tutorial de Django en 15 minutos craedo para el taller de PyDay Chile 2020.
 
 ## ¿Qué vamos a aprender?
-El objetivo del taller es crear una aplicación básica en Django que muestre información almacenada en base de datos. Con esto lograrás una base de conocimiento para iniciarte en Django y poder continuar con tu aprendizaje. Si tras finalizar el taller tienes ganas de continuar aprendiendo más, en la sección [] te dejo unas recomendaciones para seguir con tu aprendizaje.
+El objetivo del taller es crear una aplicación básica en Django que muestre información almacenada en base de datos. Con esto lograrás una base de conocimiento para iniciarte en Django y poder continuar con tu aprendizaje. Si tras finalizar el taller tienes ganas de continuar aprendiendo más, en la sección "¿Cómo puedo seguir aprendiendo más sobre Django?" te dejo unas recomendaciones para seguir con tu aprendizaje.
 
-## Conocimientos previos
+## ¿Tengo que tener algún conocimiento previo?
 
 El tutorial requiere unos conocimientos básicos de **Python y HTML**.
 Del mismo modo partirá de la base de que tienes **Python y Pip** instalado en el sistema.
@@ -289,6 +289,14 @@ Ahora que ya tenemos la información disponible en la plantilla, editamos la pla
 
 Ahora ya solo queda recargar la aplicación en nuestro navegador para visualizar todos los estudiantes.
 
+## ¿Cómo puedo seguir aprendiendo más sobre Django?
+El objetivo de este curso era el de hacer una introducción a Django con una aplicación básica. Si te has quedado con ganas de más, te recomiendo las siguientes opciones:
+- Aprender a crear formularios para insertar datos en la base de datos.
+- Crear otras vistas para navegar a los detalles de un registro.
+- Lanzar consultas más complejas a la base de datos.
+- Aprender a hacer plantillas más complejas con herencia, archivos estáticos, etc.
+
+Para ello puedes seguir el curso gratuito disponible en Youtube: [Curso DJANGO paso a paso para principiantes](https://www.youtube.com/playlist?list=PL8ZnVqiE4oiY6fh6_vvNKwkxfutf3CiMY)
 
 ## Licencia
 
