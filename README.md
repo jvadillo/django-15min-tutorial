@@ -1,6 +1,9 @@
 # django-15min-tutorial
 Tutorial de Django en 15 minutos craedo para el taller de PyDay Chile 2020.
 
+## ¿Qué vamos a aprender?
+El objetivo del taller es crear una aplicación básica en Django que muestre información almacenada en base de datos. Con esto lograrás una base de conocimiento para iniciarte en Django y poder continuar con tu aprendizaje. Si tras finalizar el taller tienes ganas de continuar aprendiendo más, en la sección [] te dejo unas recomendaciones para seguir con tu aprendizaje.
+
 ## Conocimientos previos
 
 El tutorial requiere unos conocimientos básicos de **Python y HTML**.
