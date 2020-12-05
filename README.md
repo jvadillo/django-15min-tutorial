@@ -120,7 +120,7 @@ from django.contrib import admin
 from django.urls import include, path
   
 urlpatterns = [
-    path('appEmpresaDjango/', include('appEmpresaDjango.urls')),
+    path('DjangoUniApp/', include('DjangoUniApp.urls')),
     path('admin/', admin.site.urls),
 ]
    ```
@@ -248,7 +248,7 @@ Iniciar el servidor y entrar
 python manage.py runserver
    ```
     
-Entrar en la aplicación [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) y añadir algunas entradas en cada entidad para tener un juego de ensayo que luego se pueda ver desde la aplicación [http://127.0.0.1:8000/appEmpresaDjango](http://127.0.0.1:8000/appEmpresaDjango)
+Entrar en la aplicación [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) y añadir algunas entradas en cada entidad para tener un juego de ensayo que luego se pueda ver desde la aplicación [http://127.0.0.1:8000/DjangoUniApp](http://127.0.0.1:8000/DjangoUniApp)
 
 ### PASO 9: Actualizar la vista para que muestre la información de la base de datos
 
