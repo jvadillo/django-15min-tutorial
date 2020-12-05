@@ -59,7 +59,7 @@ Posicionate en el directorio del proyecto `$ cd <project_folder>`
 
 Crea la aplicación ejecutando el siguiente comando:
 
-`python manage.py startapp DjangoUniversityApp`
+`python manage.py startapp DjangoUniyApp`
 
 Dentro del directorio de la aplicación, crear un fichero llamado `urls.py` que utilizaremos para mapear las URLs de nuestra aplicación.
 
@@ -138,7 +138,7 @@ Para que nuestra aplicación muestre vistas HTML en lugar de una cadena de texto
     <title>Django University App</title>
 </head>
 <body>
-<h1>Hello!</h1>
+<h1>Hola!</h1>
 </body>
 </html>
 ```
